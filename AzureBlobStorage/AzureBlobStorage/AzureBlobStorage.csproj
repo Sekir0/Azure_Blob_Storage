@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AzureBlobStorage.AsureStorage\AzureBlobStorage.AsureStorage.csproj" />
+    <ProjectReference Include="..\AzureBlobStorage.AsureStorage\AzureBlobStorage.AzureStorage.csproj" />
     <ProjectReference Include="..\AzureBlobStorage.Domain\AzureBlobStorage.Domain.csproj" />
   </ItemGroup>
 
