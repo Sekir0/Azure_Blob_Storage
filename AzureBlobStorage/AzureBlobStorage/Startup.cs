@@ -1,5 +1,6 @@
 using Azure.Storage.Blobs;
 using AzureBlobStorage.AsureStorage;
+using AzureBlobStorage.AzureStorage;
 using AzureBlobStorage.Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,8 +23,11 @@ namespace AzureBlobStorage
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSwaggerGen();
             services.AddControllers();
-            services.AddSingleton(x => new BlobServiceClient(Configuration.GetValue<string>("AzureBlobStorageConnectionString")));
+            services.AddSingleton(x => new AzureSettings(
+                new BlobServiceClient(Configuration.GetConnectionString("AzureBlobStorageConnectionString")),
+                Configuration.GetValue<string>("AzureContainerName")));
             services.AddSingleton<IBlobService, BlobService>();
         }
 
@@ -31,7 +35,12 @@ namespace AzureBlobStorage
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app
+                    .UseSwagger()
+                    .UseSwaggerUI(config =>
+                    {
+                        config.SwaggerEndpoint("/swagger/v1/swagger.json", "Relations.API V1");
+                    });
             }
 
             app.UseHttpsRedirection();
